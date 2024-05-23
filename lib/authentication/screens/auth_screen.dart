@@ -1,4 +1,5 @@
 import 'package:cianfafire/_core/my_colors.dart';
+import 'package:cianfafire/authentication/component/show_snackbar.dart';
 import 'package:cianfafire/authentication/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.blue,
+      backgroundColor: Colors.deepPurple,
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 32,
@@ -51,7 +52,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         (isEntrando)
-                            ? "Bem vindo ao Listin!"
+                            ? "Bem vindo(a) ao ListaCerta!"
                             : "Vamos começar?",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
@@ -91,6 +92,15 @@ class _AuthScreenState extends State<AuthScreen> {
                         }
                         return null;
                       },
+                    ),
+                    Visibility(
+                      visible: isEntrando,
+                      child: TextButton(
+                        onPressed: () {
+                          esqueciMinhaSenhaClicado();
+                        },
+                        child: Text("Esqueci minha senha"),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -134,8 +144,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       onPressed: () {
                         botaoEnviarClicado();
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red, // Cor de fundo do botão
+                      ),
                       child: Text(
                         (isEntrando) ? "Entrar" : "Cadastrar",
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     TextButton(
@@ -180,11 +194,68 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   _entrarUsuario({required String email, required String senha}) {
-    authService.entrarUsuario(email: email, senha: senha);
+    authService.entrarUsuario(email: email, senha: senha).then((String? erro) {
+      if (erro != null) {
+        showSnackBar(context: context, mensagem: erro);
+      }
+    });
   }
 
   _criarUsuario(
       {required String email, required String senha, required String nome}) {
-    authService.cadastrarUsuario(email: email, senha: senha, nome: nome);
+    authService
+        .cadastrarUsuario(email: email, senha: senha, nome: nome)
+        .then((String? erro) {
+      // se o erro for nulo, se vier vazio, significa que não houve erro.
+      if (erro != null) {
+        showSnackBar(context: context, mensagem: erro);
+      }
+    });
+  }
+
+  esqueciMinhaSenhaClicado() {
+    String email = _emailController.text;
+    showDialog(
+      context: context,
+      builder: (context) {
+        TextEditingController redefinicaoSenhaController =
+            TextEditingController(text: email);
+        return AlertDialog(
+          title: const Text("Confirme o e-mail para redefinição de senha."),
+          content: TextFormField(
+            controller: redefinicaoSenhaController,
+            decoration: const InputDecoration(label: Text("Confirme o email")),
+          ),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32))),
+          actions: [
+            TextButton(
+              onPressed: () {
+                authService
+                    .redefinicaoSenha(email: redefinicaoSenhaController.text)
+                    .then((String? erro) {
+                  if (erro == null) {
+                    showSnackBar(
+                      context: context,
+                      mensagem: "E-mail de redefinição enviado!",
+                      isErro: false,
+                    );
+                  } else {
+                    showSnackBar(context: context, mensagem: erro);
+                  }
+                  Navigator.pop(context);
+                });
+              },
+              child: const Text(
+                "Redefinir senha",
+                style: TextStyle(
+                  color: Colors.deepPurple,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
