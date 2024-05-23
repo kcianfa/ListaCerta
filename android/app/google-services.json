@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725185370198",
+    "project_id": "flutter-firebase-cianfa",
+    "storage_bucket": "flutter-firebase-cianfa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725185370198:android:dc1a6d4e0fbad04d2983f7",
+        "android_client_info": {
+          "package_name": "com.example.cianfafire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyHLkXDhel6vCh1cFfe7bcBS4mfRj3U-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
