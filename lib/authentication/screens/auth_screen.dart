@@ -64,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Text(
                       (isEntrando)
                           ? "Faça login para criar sua lista de compras."
-                          : "Faça seu cadastro para começar a criar sua lista de compras com Listin.",
+                          : "Faça seu cadastro para começar a criar sua lista de compras com ListaCerta.",
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(

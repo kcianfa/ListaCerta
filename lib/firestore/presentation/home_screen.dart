@@ -165,8 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: Theme.of(context).textTheme.headlineSmall),
               TextFormField(
                 controller: nameController,
-                decoration:
-                    const InputDecoration(label: Text("Nome do Listin")),
+                decoration: const InputDecoration(label: Text("Nome da Lista")),
               ),
               const SizedBox(
                 height: 16,
